@@ -48,22 +48,30 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  
-  screen.setTextSize(1);
-  screen.setTextColor(WHITE);
-  screen.setCursor((SCREEN_WIDTH/2)-40, SCREEN_HEIGHT/2);
-  screen.println("Hello, World!");
-  screen.drawRoundRect(10, 10, (SCREEN_WIDTH-20), SCREEN_HEIGHT-10, 2, WHITE);
-  screen.display();
 
   buttonState = digitalRead(buttonPin);
 
   screen.clearDisplay();
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
   if (buttonState == HIGH) {
-      count++;
+      delay(20);
+      count = (count+1) % 2;
       Serial.print("pressed!");
       Serial.println(count);
-      delay(2000);
+      delay(150);
   } 
+
+  screen.clearDisplay();
+  //based on count, display a demo
+  if(count == 0) {
+    screen.setTextSize(1);
+    screen.setTextColor(WHITE);
+    screen.setCursor((SCREEN_WIDTH/2)-40, SCREEN_HEIGHT/2);
+    screen.println("Hello, World!");
+    screen.drawRoundRect(10, 10, (SCREEN_WIDTH-20), SCREEN_HEIGHT-10, 2, WHITE);
+  } else if (count == 1) {
+    screen.drawPixel(10, 10, WHITE);
+  }
+
+  screen.display();
 }
