@@ -55,7 +55,7 @@ void loop() {
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
   if (buttonState == HIGH) {
       delay(20);
-      count = (count+1) % 2;
+      // count = (count+1) % 2;
       Serial.print("pressed!");
       Serial.println(count);
       delay(150);
@@ -64,14 +64,34 @@ void loop() {
   screen.clearDisplay();
   //based on count, display a demo
   if(count == 0) {
-    screen.setTextSize(1);
-    screen.setTextColor(WHITE);
-    screen.setCursor((SCREEN_WIDTH/2)-40, SCREEN_HEIGHT/2);
-    screen.println("Hello, World!");
-    screen.drawRoundRect(10, 10, (SCREEN_WIDTH-20), SCREEN_HEIGHT-10, 2, WHITE);
+    // screen.setTextSize(1);
+    // screen.setTextColor(WHITE);
+    // screen.setCursor((SCREEN_WIDTH/2)-40, SCREEN_HEIGHT/2);
+    // screen.println("Hello, World!");
+    // screen.drawRoundRect(10, 10, (SCREEN_WIDTH-20), SCREEN_HEIGHT-10, 2, WHITE);
+    drawCircleFrame(10, 10, 200);
+    drawCircleFrame(12, 9, 125);
+    drawCircleFrame(18, 8, 75);
+    drawCircleFrame(64, 5, 25);
+    drawCircleFrame(109, 8,  75);
+    drawCircleFrame(115, 9, 125);
+    drawCircleFrame(117, 10, 150);
+    drawCircleFrame(115, 11, 125);
+    drawCircleFrame(109, 12, 75);
+    drawCircleFrame(64, 15, 25);
+    drawCircleFrame(18, 12, 75);
+    drawCircleFrame(12, 11, 125);
+    // drawCircleFrame(64);
   } else if (count == 1) {
     screen.drawPixel(10, 10, WHITE);
   }
 
   screen.display();
+}
+
+void drawCircleFrame(int x, int r, int pauseLength) {
+    screen.clearDisplay();
+    screen.drawCircle(x, 32, r, WHITE);
+    screen.display();
+    delay(pauseLength);
 }
