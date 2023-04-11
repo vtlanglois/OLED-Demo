@@ -28,7 +28,7 @@ struct Position {
 
 const int interruptPin = 2;
 int demo = 0;
-const int MAX_DEMOS = 4;
+const int MAX_DEMOS = 3;
 int previousDemo = demo;
 
 int center_x = SCREEN_WIDTH / 2;   // X coordinate of the center
@@ -76,10 +76,10 @@ void loop() {
   if (demo == 0) {
     previousDemo = demo;
     drawSolarSystem();
-  } else if (demo == 1) {
-    previousDemo = demo;
-    drawSolarSystemInfo();
-  } else if(demo == 2) {
+  // } else if (demo == 1) {
+  //   previousDemo = demo;
+  //   drawSolarSystemInfo();
+  } else if(demo == 1) {
     previousDemo = demo;
     drawPyramid();
   } else {
@@ -177,7 +177,8 @@ void drawSolarSystemInfo() {
 }
 
 void printPlanetInfo(Planet planet, String name) {
-  screen.print(name + "'s pos: ");
+  screen.print(name);
+  screen.print("'s pos: ");
   screen.print(planet.center_x);
   screen.print(", ");
   screen.print(planet.center_y);
