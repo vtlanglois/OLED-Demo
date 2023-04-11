@@ -173,10 +173,17 @@ void printPlanetInfo(Planet planet, String name) {
   screen.print(planet.center_y);
   screen.println();
   screen.print(name + "'s angle: ");
-  screen.print(planet.angle);
+  screen.print(normalizeAngle(planet.angle));
   screen.println();
 }
 
+float normalizeAngle(float angle) {
+  angle = fmod(angle, 360.0);
+  if (angle < 0) {
+    angle += 360.0;
+  }
+  return angle;
+}
 
 void goToNextDemo() {
   demo = (demo + 1) % MAX_DEMOS;
