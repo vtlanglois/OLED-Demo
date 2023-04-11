@@ -17,6 +17,8 @@ int previousSlide = slide;
 int center_x = SCREEN_WIDTH / 2;   // X coordinate of the center
 int center_y = SCREEN_HEIGHT / 2;  // Y coordinate of the center
 float angle = 0;                   // Current angle of the smaller circle for Planet Demo
+float smallerAngle = 0;
+float saturnAngle = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -68,39 +70,57 @@ void loop() {
 }
 
 void drawCircleFrame(int x, int r, int x2, int r2, int pauseLength) {
+  //do this for pauseLength/30 amount of time
   for (int i = 0; i < pauseLength / 30; i++) {
     if (previousSlide != slide) {
       Serial.println("JEY!");
       return;
     }
     screen.clearDisplay();
+    //draw circle frame on the left
     screen.drawCircle(x, 16, r, WHITE);
+    //draw circle frame on the right
     screen.drawCircle(x2, 48, r2, WHITE);
     screen.display();
   }
 }
 
 void drawPlanets() {
+  int big_radius = 8;   // Radius of the bigger circle
+  int small_radius = 3;  // Radius of the smaller circle
+  int tiny_radius = 1;
+  int saturn_radius = 4;
   screen.clearDisplay();
   // Draw the bigger circle
   screen.fillCircle(center_x, center_y, big_radius, WHITE);
-
-  // Calculate the position of the smaller circle based on the current angle
-  int x = center_x + cos(angle) * ((big_radius + small_radius) * 1.5);
-  int y = center_y + sin(angle) * ((big_radius + small_radius) * 1.5);
-
+  // Calculate the position of the smaller circle (EARTH) based on the current angle
+  int x1 = center_x + cos(angle) * ((big_radius + small_radius) * 1.9);
+  int y1 = center_y + sin(angle) * ((big_radius + small_radius) * 1.9);
   // Draw the smaller circle
-  screen.fillCircle(x, y, small_radius, WHITE);
-
+  screen.fillCircle(x1, y1, small_radius, WHITE);
   // Update the angle for the next frame
   angle += 0.1;
 
-  // Show the updated display
+  // Calculate the position of the tiny circle (MOON) based on the current smaller angle and the positon of the smaller circle (EARTH)
+  int x2 = x1 + cos(smallerAngle) * ((small_radius + tiny_radius) * 1.9);
+  int y2 = y1 + sin(smallerAngle) * ((small_radius + tiny_radius) * 1.9);
+  // Draw the tiny circle
+  screen.fillCircle(x2, y2, tiny_radius, WHITE);
+
+  smallerAngle += 0.5;
+
+    // Calculate the position of the smaller circle (EARTH) based on the current angle
+  x1 = center_x + cos(saturnAngle) * ((big_radius + saturn_radius) * 3.9);
+  y1 = center_y + sin(saturnAngle) * ((big_radius + saturn_radius) * 3.9);
+  // Draw the smaller circle
+  screen.fillCircle(x1, y1, saturn_radius, WHITE);
+  screen.drawCircle(x1, y1, saturn_radius+5, WHITE);
+
+  saturnAngle += 0.005;
   screen.display();
 }
 
 
 void test() {
   slide = (slide + 1) % 2;
-  screen.println("AAA");
 }
