@@ -69,18 +69,18 @@ void loop() {
     // screen.setCursor((SCREEN_WIDTH/2)-40, SCREEN_HEIGHT/2);
     // screen.println("Hello, World!");
     // screen.drawRoundRect(10, 10, (SCREEN_WIDTH-20), SCREEN_HEIGHT-10, 2, WHITE);
-    drawCircleFrame(10, 10, 200);
-    drawCircleFrame(12, 9, 125);
-    drawCircleFrame(18, 8, 75);
-    drawCircleFrame(64, 5, 25);
-    drawCircleFrame(109, 8,  75);
-    drawCircleFrame(115, 9, 125);
-    drawCircleFrame(117, 10, 150);
-    drawCircleFrame(115, 11, 125);
-    drawCircleFrame(109, 12, 75);
-    drawCircleFrame(64, 15, 25);
-    drawCircleFrame(18, 12, 75);
-    drawCircleFrame(12, 11, 125);
+    drawCircleFrame(10, 10, 117, 10, 150);
+    drawCircleFrame(12, 9, 115, 11, 125);
+    drawCircleFrame(18, 8, 109, 12, 75);
+    drawCircleFrame(64, 5, 64, 15, 25);
+    drawCircleFrame(109, 8,  18, 12, 75);
+    drawCircleFrame(115, 9, 12, 11, 125);
+    drawCircleFrame(117, 10, 10, 10, 150);
+    drawCircleFrame(115, 11, 12, 9, 125);
+    drawCircleFrame(109, 12, 18, 8, 75);
+    drawCircleFrame(64, 15, 64, 5, 25);
+    drawCircleFrame(18, 12, 109, 8, 75);
+    drawCircleFrame(12, 11, 115, 9, 125);
     // drawCircleFrame(64);
   } else if (count == 1) {
     screen.drawPixel(10, 10, WHITE);
@@ -89,9 +89,10 @@ void loop() {
   screen.display();
 }
 
-void drawCircleFrame(int x, int r, int pauseLength) {
+void drawCircleFrame(int x, int r, int x2, int r2, int pauseLength) {
     screen.clearDisplay();
-    screen.drawCircle(x, 32, r, WHITE);
+    screen.drawCircle(x, 16, r, WHITE);
+    screen.drawCircle(x2, 48, r2, WHITE);
     screen.display();
     delay(pauseLength);
 }
