@@ -11,10 +11,10 @@
 Adafruit_SSD1306 screen(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 struct Planet {
-  int center_x; // x positon of the planet
-  int center_y; // y positon of the planet
-  int radius; // radius (half of diameter) of the planet
-  float angle; // current angle of the planet
+  int center_x;  // x positon of the planet
+  int center_y;  // y positon of the planet
+  int radius;    // radius (half of diameter) of the planet
+  float angle;   // current angle of the planet
 };
 
 struct Position {
@@ -31,10 +31,10 @@ int previousDemo = demo;
 int center_x = SCREEN_WIDTH / 2;   // X coordinate of the center
 int center_y = SCREEN_HEIGHT / 2;  // Y coordinate of the center
 
-Planet sun = {center_x, center_y, 8, 0};
-Planet earth = {0, 0, 3, 0};
-Planet moon = {0, 0, 1, 0};
-Planet saturn = {0, 0, 4, 0};
+Planet sun = { center_x, center_y, 8, 0 };
+Planet earth = { 0, 0, 3, 0 };
+Planet moon = { 0, 0, 1, 0 };
+Planet saturn = { 0, 0, 4, 0 };
 
 const int MAX_STARS = 30;
 
@@ -56,10 +56,10 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(interruptPin), goToNextDemo, RISING);
 
   // set up star positons
-  for(int i = 0; i < MAX_STARS; i++) {
+  for (int i = 0; i < MAX_STARS; i++) {
     int x = random(SCREEN_WIDTH);
     int y = random(SCREEN_HEIGHT);
-    Position pos = {x,y};
+    Position pos = { x, y };
     starPositions[i] = pos;
   }
 
@@ -68,44 +68,36 @@ void setup() {
 
   // Clear the buffer
   screen.clearDisplay();
-
-
 }
 
 void loop() {
-  // screen.setTextSize(1);
-  // screen.setTextColor(WHITE);
-  // screen.setCursor((SCREEN_WIDTH/2)-40, SCREEN_HEIGHT/2);
-  // screen.println("Hello, World!");
-  // screen.drawRoundRect(10, 10, (SCREEN_WIDTH-20), SCREEN_HEIGHT-10, 2, WHITE);
   if (demo == 0) {
     previousDemo = demo;
-    drawCircleFrame(10, 10, 117, 10, 150);
-    drawCircleFrame(12, 9, 115, 11, 125);
-    drawCircleFrame(18, 8, 109, 12, 75);
-    drawCircleFrame(64, 5, 64, 15, 25);
-    drawCircleFrame(109, 8, 18, 12, 75);
-    drawCircleFrame(115, 9, 12, 11, 125);
-    drawCircleFrame(117, 10, 10, 10, 150);
-    drawCircleFrame(115, 11, 12, 9, 125);
-    drawCircleFrame(109, 12, 18, 8, 75);
-    drawCircleFrame(64, 15, 64, 5, 25);
-    drawCircleFrame(18, 12, 109, 8, 75);
-    drawCircleFrame(12, 11, 115, 9, 125);
+    drawSolarSystem();
   } else if (demo == 1) {
-    drawPlanets();
+    previousDemo = demo;
+    drawSolarSystemInfo();
   } else {
-    screen.clearDisplay();
-    screen.setCursor(0, 0);
-    screen.setTextSize(1);
-    screen.setTextColor(WHITE);
-    printPlanetInfo(earth, "Earth");
-    printPlanetInfo(moon, "Moon");
-    printPlanetInfo(saturn, "Saturn");
-    screen.display();
+    previousDemo = demo;
+    drawCircleAnimation();
   }
 
   Serial.println(demo);
+}
+
+void drawCircleAnimation() {
+  drawCircleFrame(10, 10, 117, 10, 150);
+  drawCircleFrame(12, 9, 115, 11, 125);
+  drawCircleFrame(18, 8, 109, 12, 75);
+  drawCircleFrame(64, 5, 64, 15, 25);
+  drawCircleFrame(109, 8, 18, 12, 75);
+  drawCircleFrame(115, 9, 12, 11, 125);
+  drawCircleFrame(117, 10, 10, 10, 150);
+  drawCircleFrame(115, 11, 12, 9, 125);
+  drawCircleFrame(109, 12, 18, 8, 75);
+  drawCircleFrame(64, 15, 64, 5, 25);
+  drawCircleFrame(18, 12, 109, 8, 75);
+  drawCircleFrame(12, 11, 115, 9, 125);
 }
 
 void drawCircleFrame(int x, int r, int x2, int r2, int pauseLength) {
@@ -124,11 +116,11 @@ void drawCircleFrame(int x, int r, int x2, int r2, int pauseLength) {
   }
 }
 
-void drawPlanets() {
+void drawSolarSystem() {
   screen.clearDisplay();
 
   // Draw stars
-  for(Position pos : starPositions) {
+  for (Position pos : starPositions) {
     screen.drawPixel(pos.x, pos.y, WHITE);
   }
 
@@ -156,22 +148,33 @@ void drawPlanets() {
   // Draw Saturn
   screen.fillCircle(saturn.center_x, saturn.center_y, saturn.radius, WHITE);
   // Draw Saturn's rings
-  screen.drawCircle(saturn.center_x, saturn.center_y, saturn.radius+3, WHITE);
-  screen.drawCircle(saturn.center_x, saturn.center_y, saturn.radius+5, WHITE);
+  screen.drawCircle(saturn.center_x, saturn.center_y, saturn.radius + 3, WHITE);
+  screen.drawCircle(saturn.center_x, saturn.center_y, saturn.radius + 5, WHITE);
   // Update Saturn's angle for the next frame
   saturn.angle += 0.005;
   screen.display();
 }
 
+void drawSolarSystemInfo() {
+  screen.clearDisplay();
+  screen.setCursor(0, 0);
+  screen.setTextSize(1);
+  screen.setTextColor(WHITE);
+  printPlanetInfo(earth, "Earth");
+  printPlanetInfo(moon, "Moon");
+  printPlanetInfo(saturn, "Saturn");
+  screen.display();
+}
+
 void printPlanetInfo(Planet planet, String name) {
-    screen.print(name + "'s pos: ");
-    screen.print(planet.center_x);
-    screen.print(", ");
-    screen.print(planet.center_y);
-    screen.println();
-    screen.print(name + "'s angle: ");
-    screen.print(planet.angle);
-    screen.println();
+  screen.print(name + "'s pos: ");
+  screen.print(planet.center_x);
+  screen.print(", ");
+  screen.print(planet.center_y);
+  screen.println();
+  screen.print(name + "'s angle: ");
+  screen.print(planet.angle);
+  screen.println();
 }
 
 
