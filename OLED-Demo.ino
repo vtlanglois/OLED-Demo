@@ -24,9 +24,9 @@ struct Position {
 
 
 const int interruptPin = 2;
-int slide = 0;
-const int MAX_SLIDES = 3;
-int previousSlide = slide;
+int demo = 0;
+const int MAX_DEMOS = 3;
+int previousDemo = demo;
 
 int center_x = SCREEN_WIDTH / 2;   // X coordinate of the center
 int center_y = SCREEN_HEIGHT / 2;  // Y coordinate of the center
@@ -53,7 +53,7 @@ void setup() {
   }
 
   pinMode(interruptPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(interruptPin), test, RISING);
+  attachInterrupt(digitalPinToInterrupt(interruptPin), goToNextDemo, RISING);
 
   // set up star positons
   for(int i = 0; i < MAX_STARS; i++) {
@@ -78,8 +78,8 @@ void loop() {
   // screen.setCursor((SCREEN_WIDTH/2)-40, SCREEN_HEIGHT/2);
   // screen.println("Hello, World!");
   // screen.drawRoundRect(10, 10, (SCREEN_WIDTH-20), SCREEN_HEIGHT-10, 2, WHITE);
-  if (slide == 0) {
-    previousSlide = slide;
+  if (demo == 0) {
+    previousDemo = demo;
     drawCircleFrame(10, 10, 117, 10, 150);
     drawCircleFrame(12, 9, 115, 11, 125);
     drawCircleFrame(18, 8, 109, 12, 75);
@@ -92,7 +92,7 @@ void loop() {
     drawCircleFrame(64, 15, 64, 5, 25);
     drawCircleFrame(18, 12, 109, 8, 75);
     drawCircleFrame(12, 11, 115, 9, 125);
-  } else if (slide == 1) {
+  } else if (demo == 1) {
     drawPlanets();
   } else {
     screen.clearDisplay();
@@ -105,13 +105,13 @@ void loop() {
     screen.display();
   }
 
-  Serial.println(slide);
+  Serial.println(demo);
 }
 
 void drawCircleFrame(int x, int r, int x2, int r2, int pauseLength) {
   //do this for pauseLength/30 amount of time
   for (int i = 0; i < pauseLength / 30; i++) {
-    if (previousSlide != slide) {
+    if (previousDemo != demo) {
       Serial.println("JEY!");
       return;
     }
@@ -175,6 +175,6 @@ void printPlanetInfo(Planet planet, String name) {
 }
 
 
-void test() {
-  slide = (slide + 1) % MAX_SLIDES;
+void goToNextDemo() {
+  demo = (demo + 1) % MAX_DEMOS;
 }
