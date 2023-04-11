@@ -10,6 +10,8 @@
 #define SCREEN_ADDRESS 0x3C  ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 Adafruit_SSD1306 screen(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+
+// data struct represents a Planet's position, radius, and angle in the solar system demo
 struct Planet {
   int center_x;  // x positon of the planet
   int center_y;  // y positon of the planet
@@ -17,6 +19,7 @@ struct Planet {
   float angle;   // current angle of the planet
 };
 
+// data struct represents a star's position in the solar system demo
 struct Position {
   int x;
   int y;
@@ -36,7 +39,9 @@ Planet earth = { 0, 0, 3, 0 };
 Planet moon = { 0, 0, 1, 0 };
 Planet saturn = { 0, 0, 4, 0 };
 
-const int MAX_STARS = 30;
+//for pyramid demo
+
+const int MAX_STARS = 60;
 
 Position starPositions[MAX_STARS];
 
@@ -76,7 +81,8 @@ void loop() {
     drawSolarSystem();
   } else if (demo == 1) {
     previousDemo = demo;
-    drawSolarSystemInfo();
+    drawMountain();
+    //drawSolarSystemInfo();
   } else {
     previousDemo = demo;
     drawCircleAnimation();
@@ -89,13 +95,17 @@ void drawCircleAnimation() {
   drawCircleFrame(10, 10, 117, 10, 150);
   drawCircleFrame(12, 9, 115, 11, 125);
   drawCircleFrame(18, 8, 109, 12, 75);
+  drawCircleFrame(31, 7, 96, 13, 75);
   drawCircleFrame(64, 5, 64, 15, 25);
+  drawCircleFrame(96, 7, 31, 13, 75);
   drawCircleFrame(109, 8, 18, 12, 75);
   drawCircleFrame(115, 9, 12, 11, 125);
   drawCircleFrame(117, 10, 10, 10, 150);
   drawCircleFrame(115, 11, 12, 9, 125);
   drawCircleFrame(109, 12, 18, 8, 75);
+  drawCircleFrame(96, 13, 31, 7, 75);
   drawCircleFrame(64, 15, 64, 5, 25);
+  drawCircleFrame(31, 13, 96, 7, 75);
   drawCircleFrame(18, 12, 109, 8, 75);
   drawCircleFrame(12, 11, 115, 9, 125);
 }
@@ -120,9 +130,10 @@ void drawSolarSystem() {
   screen.clearDisplay();
 
   // Draw stars
-  for (Position pos : starPositions) {
-    screen.drawPixel(pos.x, pos.y, WHITE);
+  for (int i = 0; i < MAX_STARS/2; i++) {
+    screen.drawPixel(starPositions[i].x, starPositions[i].y, WHITE);
   }
+
 
   // Draw the Sun
   screen.fillCircle(sun.center_x, sun.center_y, sun.radius, WHITE);
@@ -184,6 +195,33 @@ float normalizeAngle(float angle) {
   }
   return angle;
 }
+void drawMountain() {
+  screen.clearDisplay();
+
+  // Draw ALL stars
+  for (Position pos : starPositions) {
+    screen.drawPixel(pos.x, pos.y, WHITE);
+  }
+
+  //define the points for the pyramid triangle
+  int x1 = 0;
+  int y1 = SCREEN_HEIGHT;
+  int x2 = SCREEN_WIDTH / 2;
+  int y2 = SCREEN_HEIGHT / 4;
+  int x3 = SCREEN_WIDTH;
+  int y3 = SCREEN_HEIGHT;
+
+  // Draw the filled triangle for the pyramid
+  screen.fillTriangle(x1, y1, x2, y2, x3, y3, WHITE);
+
+  // Draw the lines on the triangle to mimic pyramid bricks
+  screen.drawLine(0, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT/2, BLACK);
+  screen.drawLine(0, (SCREEN_HEIGHT/2)+10, SCREEN_WIDTH, (SCREEN_HEIGHT/2)+10, BLACK);
+  screen.drawLine(0, (SCREEN_HEIGHT/2)+20, SCREEN_WIDTH, (SCREEN_HEIGHT/2)+20, BLACK);
+  // Update the screen
+  screen.display();
+}
+
 
 void goToNextDemo() {
   demo = (demo + 1) % MAX_DEMOS;
