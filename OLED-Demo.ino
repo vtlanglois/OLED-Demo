@@ -28,7 +28,7 @@ struct Position {
 
 const int interruptPin = 2;
 int demo = 0;
-const int MAX_DEMOS = 3;
+const int MAX_DEMOS = 4;
 int previousDemo = demo;
 
 int center_x = SCREEN_WIDTH / 2;   // X coordinate of the center
@@ -39,12 +39,7 @@ Planet earth = { 0, 0, 3, 0 };
 Planet moon = { 0, 0, 1, 0 };
 Planet saturn = { 0, 0, 4, 0 };
 
-//for pyramid demo
-Planet py_sun = {center_x, 0, 8, 0};
-Planet py_moon = {center_x, SCREEN_HEIGHT, 7, 0};
-
 const int MAX_STARS = 60;
-
 Position starPositions[MAX_STARS];
 
 void setup() {
@@ -83,8 +78,10 @@ void loop() {
     drawSolarSystem();
   } else if (demo == 1) {
     previousDemo = demo;
-    drawMountain();
-    //drawSolarSystemInfo();
+    drawSolarSystemInfo();
+  } else if(demo == 2) {
+    previousDemo = demo;
+    drawPyramid();
   } else {
     previousDemo = demo;
     drawCircleAnimation();
@@ -197,7 +194,7 @@ float normalizeAngle(float angle) {
   }
   return angle;
 }
-void drawMountain() {
+void drawPyramid() {
   screen.clearDisplay();
 
   // Draw ALL stars
@@ -205,10 +202,11 @@ void drawMountain() {
     screen.drawPixel(pos.x, pos.y, WHITE);
   }
 
-  screen.fillCircle(py_sun.center_x-30, py_sun.center_y+7, py_sun.radius, WHITE);
-  screen.fillCircle(py_sun.center_x-28, py_sun.center_y+5, py_sun.radius, BLACK);
+  // Draw Cresent Moon
+  screen.fillCircle(center_x-30, 7, 8, WHITE);
+  screen.fillCircle(center_x-28, 5, 8, BLACK);
 
-  //define the points for the pyramid triangle
+  // Define the points for the pyramid triangle
   int x1 = 0;
   int y1 = SCREEN_HEIGHT;
   int x2 = SCREEN_WIDTH / 2;
@@ -223,6 +221,7 @@ void drawMountain() {
   screen.drawLine(0, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT/2, BLACK);
   screen.drawLine(0, (SCREEN_HEIGHT/2)+10, SCREEN_WIDTH, (SCREEN_HEIGHT/2)+10, BLACK);
   screen.drawLine(0, (SCREEN_HEIGHT/2)+20, SCREEN_WIDTH, (SCREEN_HEIGHT/2)+20, BLACK);
+
   // Update the screen
 
   screen.display();
