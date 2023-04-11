@@ -17,6 +17,11 @@ struct Planet {
   float angle; // current angle of the planet
 };
 
+struct Position {
+  int x;
+  int y;
+};
+
 
 const int interruptPin = 2;
 int slide = 0;
@@ -29,6 +34,10 @@ Planet sun = {center_x, center_y, 8, 0};
 Planet earth = {0, 0, 3, 0};
 Planet moon = {0, 0, 1, 0};
 Planet saturn = {0, 0, 4, 0};
+
+const int MAX_STARS = 30;
+
+Position starPositions[MAX_STARS];
 
 void setup() {
   // put your setup code here, to run once:
@@ -45,11 +54,21 @@ void setup() {
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin), test, RISING);
 
+  // set up star positons
+  for(int i = 0; i < MAX_STARS; i++) {
+    int x = random(SCREEN_WIDTH);
+    int y = random(SCREEN_HEIGHT);
+    Position pos = {x,y};
+    starPositions[i] = pos;
+  }
+
   screen.display();
   delay(2000);  // Pause for 2 seconds
 
   // Clear the buffer
   screen.clearDisplay();
+
+
 }
 
 void loop() {
@@ -97,6 +116,12 @@ void drawCircleFrame(int x, int r, int x2, int r2, int pauseLength) {
 
 void drawPlanets() {
   screen.clearDisplay();
+
+  // Draw stars
+  for(Position pos : starPositions) {
+    screen.drawPixel(pos.x, pos.y, WHITE);
+  }
+
   // Draw the Sun
   screen.fillCircle(sun.center_x, sun.center_y, sun.radius, WHITE);
   // Calculate the position of Earth based on it;s current angle
