@@ -40,6 +40,8 @@ Planet moon = { 0, 0, 1, 0 };
 Planet saturn = { 0, 0, 4, 0 };
 
 //for pyramid demo
+Planet py_sun = {center_x, 0, 8, 0};
+Planet py_moon = {center_x, SCREEN_HEIGHT, 7, 0};
 
 const int MAX_STARS = 60;
 
@@ -203,6 +205,9 @@ void drawMountain() {
     screen.drawPixel(pos.x, pos.y, WHITE);
   }
 
+  screen.fillCircle(py_sun.center_x-30, py_sun.center_y+7, py_sun.radius, WHITE);
+  screen.fillCircle(py_sun.center_x-28, py_sun.center_y+5, py_sun.radius, BLACK);
+
   //define the points for the pyramid triangle
   int x1 = 0;
   int y1 = SCREEN_HEIGHT;
@@ -219,6 +224,7 @@ void drawMountain() {
   screen.drawLine(0, (SCREEN_HEIGHT/2)+10, SCREEN_WIDTH, (SCREEN_HEIGHT/2)+10, BLACK);
   screen.drawLine(0, (SCREEN_HEIGHT/2)+20, SCREEN_WIDTH, (SCREEN_HEIGHT/2)+20, BLACK);
   // Update the screen
+
   screen.display();
 }
 
