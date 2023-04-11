@@ -10,15 +10,25 @@
 #define SCREEN_ADDRESS 0x3C  ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 Adafruit_SSD1306 screen(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+struct Planet {
+  int center_x; // x positon of the planet
+  int center_y; // y positon of the planet
+  int radius; // radius (half of diameter) of the planet
+  float angle; // current angle of the planet
+};
+
+
 const int interruptPin = 2;
 int slide = 0;
 int previousSlide = slide;
 
 int center_x = SCREEN_WIDTH / 2;   // X coordinate of the center
 int center_y = SCREEN_HEIGHT / 2;  // Y coordinate of the center
-float angle = 0;                   // Current angle of the smaller circle for Planet Demo
-float smallerAngle = 0;
-float saturnAngle = 0;
+
+Planet sun = {center_x, center_y, 8, 0};
+Planet earth = {0, 0, 3, 0};
+Planet moon = {0, 0, 1, 0};
+Planet saturn = {0, 0, 4, 0};
 
 void setup() {
   // put your setup code here, to run once:
@@ -86,37 +96,35 @@ void drawCircleFrame(int x, int r, int x2, int r2, int pauseLength) {
 }
 
 void drawPlanets() {
-  int big_radius = 8;   // Radius of the bigger circle
-  int small_radius = 3;  // Radius of the smaller circle
-  int tiny_radius = 1;
-  int saturn_radius = 4;
   screen.clearDisplay();
-  // Draw the bigger circle
-  screen.fillCircle(center_x, center_y, big_radius, WHITE);
-  // Calculate the position of the smaller circle (EARTH) based on the current angle
-  int x1 = center_x + cos(angle) * ((big_radius + small_radius) * 1.9);
-  int y1 = center_y + sin(angle) * ((big_radius + small_radius) * 1.9);
-  // Draw the smaller circle
-  screen.fillCircle(x1, y1, small_radius, WHITE);
-  // Update the angle for the next frame
-  angle += 0.1;
+  // Draw the Sun
+  screen.fillCircle(sun.center_x, sun.center_y, sun.radius, WHITE);
+  // Calculate the position of Earth based on it;s current angle
+  earth.center_x = sun.center_x + cos(earth.angle) * ((sun.radius + earth.radius) * 1.9);
+  earth.center_y = sun.center_y + sin(earth.angle) * ((sun.radius + earth.radius) * 1.9);
+  // Draw Earth
+  screen.fillCircle(earth.center_x, earth.center_y, earth.radius, WHITE);
+  // Update Earth's angle for the next frame
+  earth.angle += 0.01;
 
-  // Calculate the position of the tiny circle (MOON) based on the current smaller angle and the positon of the smaller circle (EARTH)
-  int x2 = x1 + cos(smallerAngle) * ((small_radius + tiny_radius) * 1.9);
-  int y2 = y1 + sin(smallerAngle) * ((small_radius + tiny_radius) * 1.9);
-  // Draw the tiny circle
-  screen.fillCircle(x2, y2, tiny_radius, WHITE);
+  // Calculate the position of the Moon based on the current smaller angle and the positon of Earth
+  moon.center_x = earth.center_x + cos(moon.angle) * ((earth.radius + moon.radius) * 1.9);
+  moon.center_y = earth.center_y + sin(moon.angle) * ((earth.radius + moon.radius) * 1.9);
+  // Draw the Moon
+  screen.fillCircle(moon.center_x, moon.center_y, moon.radius, WHITE);
+  // Update Moons angle for the next frame
+  moon.angle += 0.5;
 
-  smallerAngle += 0.5;
-
-    // Calculate the position of the smaller circle (EARTH) based on the current angle
-  x1 = center_x + cos(saturnAngle) * ((big_radius + saturn_radius) * 3.9);
-  y1 = center_y + sin(saturnAngle) * ((big_radius + saturn_radius) * 3.9);
-  // Draw the smaller circle
-  screen.fillCircle(x1, y1, saturn_radius, WHITE);
-  screen.drawCircle(x1, y1, saturn_radius+5, WHITE);
-
-  saturnAngle += 0.005;
+  // Calculate the position of Saturn based on it's current angle and Sun
+  saturn.center_x = sun.center_x + cos(saturn.angle) * ((sun.radius + saturn.radius) * 3.9);
+  saturn.center_y = sun.center_y + sin(saturn.angle) * ((sun.radius + saturn.radius) * 3.9);
+  // Draw Saturn
+  screen.fillCircle(saturn.center_x, saturn.center_y, saturn.radius, WHITE);
+  // Draw Saturn's rings
+  screen.drawCircle(saturn.center_x, saturn.center_y, saturn.radius+3, WHITE);
+  screen.drawCircle(saturn.center_x, saturn.center_y, saturn.radius+5, WHITE);
+  // Update Saturn's angle for the next frame
+  saturn.angle += 0.005;
   screen.display();
 }
 
