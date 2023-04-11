@@ -25,6 +25,7 @@ struct Position {
 
 const int interruptPin = 2;
 int slide = 0;
+const int MAX_SLIDES = 3;
 int previousSlide = slide;
 
 int center_x = SCREEN_WIDTH / 2;   // X coordinate of the center
@@ -91,8 +92,17 @@ void loop() {
     drawCircleFrame(64, 15, 64, 5, 25);
     drawCircleFrame(18, 12, 109, 8, 75);
     drawCircleFrame(12, 11, 115, 9, 125);
-  } else {
+  } else if (slide == 1) {
     drawPlanets();
+  } else {
+    screen.clearDisplay();
+    screen.setCursor(0, 0);
+    screen.setTextSize(1);
+    screen.setTextColor(WHITE);
+    printPlanetInfo(earth, "Earth");
+    printPlanetInfo(moon, "Moon");
+    printPlanetInfo(saturn, "Saturn");
+    screen.display();
   }
 
   Serial.println(slide);
@@ -153,7 +163,18 @@ void drawPlanets() {
   screen.display();
 }
 
+void printPlanetInfo(Planet planet, String name) {
+    screen.print(name + "'s pos: ");
+    screen.print(planet.center_x);
+    screen.print(", ");
+    screen.print(planet.center_y);
+    screen.println();
+    screen.print(name + "'s angle: ");
+    screen.print(planet.angle);
+    screen.println();
+}
+
 
 void test() {
-  slide = (slide + 1) % 2;
+  slide = (slide + 1) % MAX_SLIDES;
 }
