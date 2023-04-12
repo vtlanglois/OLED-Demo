@@ -16,7 +16,7 @@ To assemble the device, you will need:
 
 Follow these steps to set up the hardware:
 
-1. Connect **5V** and **Ground* from the Arduino UNO to the breadboard in their appropriate buses.
+1. Connect **5V** and **Ground** from the Arduino UNO to the breadboard in their appropriate buses.
 2. Connect the OLED screen to the breadboard.
 3. Connect the OLED screen to **5V** and **Ground** from the breadboard bus.
 4. Connect a jumper wire from **Analog Input A4** to **SDA** on the OLED screen.
