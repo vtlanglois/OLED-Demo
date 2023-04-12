@@ -28,7 +28,7 @@ struct Position {
 
 const int interruptPin = 2;
 int demo = 0;
-const int MAX_DEMOS = 3;
+const int MAX_DEMOS = 4;
 int previousDemo = demo;
 
 int center_x = SCREEN_WIDTH / 2;   // X coordinate of the center
@@ -76,10 +76,10 @@ void loop() {
   if (demo == 0) {
     previousDemo = demo;
     drawSolarSystem();
-  // } else if (demo == 1) {
-  //   previousDemo = demo;
-  //   drawSolarSystemInfo();
-  } else if(demo == 1) {
+  } else if (demo == 1) {
+    previousDemo = demo;
+    drawSolarSystemInfo();
+  } else if(demo == 2) {
     previousDemo = demo;
     drawPyramid();
   } else {
@@ -167,24 +167,28 @@ void drawSolarSystem() {
 
 void drawSolarSystemInfo() {
   screen.clearDisplay();
-  screen.setCursor(0, 0);
+  screen.setCursor(7, 20);
   screen.setTextSize(1);
   screen.setTextColor(WHITE);
-  printPlanetInfo(earth, "Earth");
-  printPlanetInfo(moon, "Moon");
-  printPlanetInfo(saturn, "Saturn");
+  // printPlanetInfo(earth, "EA");
+  // printPlanetInfo(moon, "MN");
+  // printPlanetInfo(saturn, "ST");
+  printPlanetInfo();
   screen.display();
 }
 
-void printPlanetInfo(Planet planet, String name) {
-  screen.print(name);
-  screen.print("'s pos: ");
-  screen.print(planet.center_x);
+void printPlanetInfo() {
+  // screen.print(name);
+  screen.print("Earth's pos: ");
+  screen.print(earth.center_x);
   screen.print(", ");
-  screen.print(planet.center_y);
+  screen.print(earth.center_y);
   screen.println();
-  screen.print(name + "'s angle: ");
-  screen.print(normalizeAngle(planet.angle));
+  screen.setCursor(7, 30);
+  // screen.print(name);
+  screen.print("Earth's angle: ");
+  screen.print(normalizeAngle(earth.angle));
+  screen.drawRoundRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 3, WHITE);
   screen.println();
 }
 
