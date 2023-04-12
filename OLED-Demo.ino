@@ -34,9 +34,10 @@ int previousDemo = demo;
 int center_x = SCREEN_WIDTH / 2;   // X coordinate of the center
 int center_y = SCREEN_HEIGHT / 2;  // Y coordinate of the center
 
-Planet sun = { center_x, center_y, 8, 0 };
+Planet sun = { center_x, center_y, 7, 0 };
 Planet earth = { 0, 0, 3, 0 };
 Planet moon = { 0, 0, 1, 0 };
+Planet mars = {0, 0, 2, 0};
 Planet saturn = { 0, 0, 4, 0 };
 
 const int MAX_STARS = 60;
@@ -94,17 +95,17 @@ void drawCircleAnimation() {
   drawCircleFrame(10, 10, 117, 10, 150);
   drawCircleFrame(12, 9, 115, 11, 125);
   drawCircleFrame(18, 8, 109, 12, 75);
-  drawCircleFrame(31, 7, 96, 13, 75);
+  drawCircleFrame(31, 7, 96, 13, 50);
   drawCircleFrame(64, 5, 64, 15, 25);
-  drawCircleFrame(96, 7, 31, 13, 75);
+  drawCircleFrame(96, 7, 31, 13, 50);
   drawCircleFrame(109, 8, 18, 12, 75);
   drawCircleFrame(115, 9, 12, 11, 125);
   drawCircleFrame(117, 10, 10, 10, 150);
   drawCircleFrame(115, 11, 12, 9, 125);
   drawCircleFrame(109, 12, 18, 8, 75);
-  drawCircleFrame(96, 13, 31, 7, 75);
+  drawCircleFrame(96, 13, 31, 7, 50);
   drawCircleFrame(64, 15, 64, 5, 25);
-  drawCircleFrame(31, 13, 96, 7, 75);
+  drawCircleFrame(31, 13, 96, 7, 50);
   drawCircleFrame(18, 12, 109, 8, 75);
   drawCircleFrame(12, 11, 115, 9, 125);
 }
@@ -152,16 +153,25 @@ void drawSolarSystem() {
   // Update Moons angle for the next frame
   moon.angle += 0.5;
 
+  // Calculate the position of Mars based on it;s current angle
+  mars.center_x = sun.center_x + cos(mars.angle) * ((sun.radius + mars.radius) * 3.5);
+  mars.center_y = sun.center_y + sin(mars.angle) * ((sun.radius + mars.radius) * 3.5);
+  // Draw Mars
+  screen.fillCircle(mars.center_x, mars.center_y, mars.radius, WHITE);
+  // Update Mars' angle for the next frame
+  mars.angle += 0.005;
+
   // Calculate the position of Saturn based on it's current angle and Sun
-  saturn.center_x = sun.center_x + cos(saturn.angle) * ((sun.radius + saturn.radius) * 3.9);
-  saturn.center_y = sun.center_y + sin(saturn.angle) * ((sun.radius + saturn.radius) * 3.9);
+  saturn.center_x = sun.center_x + cos(saturn.angle) * ((sun.radius + saturn.radius) * 4.1);
+  saturn.center_y = sun.center_y + sin(saturn.angle) * ((sun.radius + saturn.radius) * 4.1);
   // Draw Saturn
   screen.fillCircle(saturn.center_x, saturn.center_y, saturn.radius, WHITE);
   // Draw Saturn's rings
   screen.drawCircle(saturn.center_x, saturn.center_y, saturn.radius + 3, WHITE);
-  screen.drawCircle(saturn.center_x, saturn.center_y, saturn.radius + 5, WHITE);
+  // screen.drawCircle(saturn.center_x, saturn.center_y, saturn.radius + 5, WHITE);
   // Update Saturn's angle for the next frame
-  saturn.angle += 0.005;
+  saturn.angle += 0.0005;
+
   screen.display();
 }
 
@@ -202,6 +212,7 @@ float normalizeAngle(float angle) {
 void drawPyramid() {
   screen.clearDisplay();
 
+
   // Draw ALL stars
   for (Position pos : starPositions) {
     screen.drawPixel(pos.x, pos.y, WHITE);
@@ -224,8 +235,11 @@ void drawPyramid() {
 
   // Draw the lines on the triangle to mimic pyramid bricks
   screen.drawLine(0, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT/2, BLACK);
+  screen.drawLine(0, (SCREEN_HEIGHT/2)+1, SCREEN_WIDTH, (SCREEN_HEIGHT/2)+1, BLACK);
   screen.drawLine(0, (SCREEN_HEIGHT/2)+10, SCREEN_WIDTH, (SCREEN_HEIGHT/2)+10, BLACK);
+  screen.drawLine(0, (SCREEN_HEIGHT/2)+11, SCREEN_WIDTH, (SCREEN_HEIGHT/2)+11, BLACK);
   screen.drawLine(0, (SCREEN_HEIGHT/2)+20, SCREEN_WIDTH, (SCREEN_HEIGHT/2)+20, BLACK);
+  screen.drawLine(0, (SCREEN_HEIGHT/2)+21, SCREEN_WIDTH, (SCREEN_HEIGHT/2)+21, BLACK);
 
   // Update the screen
 
