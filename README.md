@@ -39,7 +39,7 @@ To run the code, you will need to install the Arduino Integrated Development Env
 Once the code has been uploaded to the device, the button can be used to switch between the four demos:
 
 1. **Solar System Animation**: This demo showcases a 2D animation of Earth, the Moon, Mars, and Saturn orbiting the Sun. Simple shapes and math are used to create the animation, with stars in the background as pixels.
-2. **Earth Position**: This demo displays the position and angle of Earth in the solar system. This serves to demonstrate printing text and variables to the OLED screen.
+2. **Earth Data**: This demo displays the position and angle of Earth in the solar system. This serves to demonstrate printing text and variables to the OLED screen.
 3. **Pyramid in the Night**: This demo depicts a pyramid in the night with a crescent moon above it. The aim is to demonstrate the creation of complex images using simple shapes such as lines, triangles, and circles.
 4. **Moving Circles**: This demo features two circles moving rapidly across the screen, with the appearance of moving into and out of the foreground. This animation serves to demonstrate how OLED screens and Arduinos can generate more sophisticated animations using squash-and-stretch and variable frame lengths.
 
