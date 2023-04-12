@@ -74,22 +74,24 @@ void setup() {
 }
 
 void loop() {
+  // Based on the currently selected demo, display either the whole animation, frame of animation, or still image
   if (demo == 0) {
     previousDemo = demo;
-    drawSolarSystem();
+    drawSolarSystem(); // Frame-by-frame
   } else if (demo == 1) {
     previousDemo = demo;
-    drawSolarSystemInfo();
+    drawSolarSystemInfo();// Still image
   } else if(demo == 2) {
     previousDemo = demo;
-    drawPyramid();
+    drawPyramid(); // Still image
   } else {
     previousDemo = demo;
-    drawCircleAnimation();
+    drawCircleAnimation(); //Whole Animation
   }
 
   Serial.println(demo);
 }
+
 
 void drawCircleAnimation() {
   drawCircleFrame(10, 10, 117, 10, 150);
@@ -111,16 +113,16 @@ void drawCircleAnimation() {
 }
 
 void drawCircleFrame(int x, int r, int x2, int r2, int pauseLength) {
-  //do this for pauseLength/30 amount of time
+  // Clear and draw frames for (pauseLength/3) amount of time. Made to work better with interrupts.
   for (int i = 0; i < pauseLength / 30; i++) {
     if (previousDemo != demo) {
       Serial.println("JEY!");
       return;
     }
     screen.clearDisplay();
-    //draw circle frame on the left
+    // Draw upper circle frame
     screen.drawCircle(x, 16, r, WHITE);
-    //draw circle frame on the right
+    // Draw lower circle frame
     screen.drawCircle(x2, 48, r2, WHITE);
     screen.display();
   }
@@ -166,9 +168,9 @@ void drawSolarSystem() {
   saturn.center_y = sun.center_y + sin(saturn.angle) * ((sun.radius + saturn.radius) * 4.1);
   // Draw Saturn
   screen.fillCircle(saturn.center_x, saturn.center_y, saturn.radius, WHITE);
-  // Draw Saturn's rings
+  // Draw Saturn's ring
   screen.drawCircle(saturn.center_x, saturn.center_y, saturn.radius + 3, WHITE);
-  // screen.drawCircle(saturn.center_x, saturn.center_y, saturn.radius + 5, WHITE);
+
   // Update Saturn's angle for the next frame
   saturn.angle += 0.0005;
 

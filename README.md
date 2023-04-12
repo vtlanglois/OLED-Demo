@@ -4,11 +4,15 @@ This repository provides code and instructions for building an Arduino-based dev
 
 This project was created for INFO-341 **Prototyping with Arduino Tools**, a class taught at Indiana University in Spring 2023.
 
+## **Note**
+
+This project is built to use a I1C OLED Screen. Using a I2C screen will not work with this codebase.
+
 ## Hardware Setup
 
 To assemble the device, you will need:
 
-- OLED screen
+- I1C OLED screen
 - Button
 - Breadboard
 - Jumper wires
